@@ -138,6 +138,35 @@ def summary():
 )
 
 
+#--------------------------------------------------------for line chart - without reloading page ----------------------------------------------
+
+@summary_bp.route("/summary/trend-data")
+@login_required
+def trend_data():
+    user_id = session.get("user_id")
+    year = int(request.args.get("year", datetime.now().year))
+
+    monthly_data = (
+        db.session.query(func.extract('month', Emission.date), func.sum(Emission.emission))
+        .filter(Emission.user_id == user_id)
+        .filter(func.extract('year', Emission.date) == year)
+        .group_by(func.extract('month', Emission.date))
+        .order_by(func.extract('month', Emission.date))
+        .all()
+    )
+
+    month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    monthly_emissions = [0] * 12
+
+    for month_num, total_emission in monthly_data:
+        monthly_emissions[int(month_num) - 1] = round(total_emission, 2)
+
+    return jsonify({
+        "labels": month_labels,
+        "data": monthly_emissions
+    })
+#-------------------------------------------------------------------------------------------------------------------------------------------------
 
 @summary_bp.route("/summary/data")
 @login_required

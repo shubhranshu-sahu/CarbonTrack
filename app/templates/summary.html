@@ -55,7 +55,7 @@
 
 
 
-<div class="container mt-4">
+<div class="container mt-4 mb-5">
   <div class="row justify-content-between align-items-center mb-4">
     <div class="col-md-3">
       <select class="form-select" id="viewType" onchange="updateChart()">
@@ -114,7 +114,7 @@
 
 <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
 
-<div class="container mb-5">
+<!-- <div class="container mb-5">
   <div class="card shadow-sm border-0">
     <div class="card-header bg-primary text-white fw-bold">
       Monthly Emission Trend - {{ current_year }}
@@ -123,7 +123,7 @@
       <canvas id="trendChart" height="100"></canvas>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
 
@@ -143,6 +143,23 @@
    -->
 
 
+<div class="container mb-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white fw-bold d-flex justify-content-between align-items-center">
+      <span><i class="fas fa-chart-line me-2"></i> Monthly Emission Trend</span>
+      <div>
+        <select class="form-select form-select-sm" id="trendYearSelect" style="width: auto;" onchange="updateTrendChart()">
+          {% for y in years %}
+            <option value="{{ y }}" {% if y == current_year %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="card-body">
+      <canvas id="trendChart" height="100"></canvas>
+    </div>
+  </div>
+</div>
 
 
   
@@ -179,7 +196,7 @@
   
 </script> -->
 
-<script>
+<!-- <script>
     const trendCtx = document.getElementById('trendChart').getContext('2d');
     const trendChart = new Chart(trendCtx, {
       type: 'line',
@@ -204,7 +221,7 @@
         }
       }
     });
-  </script>
+  </script> -->
   
   <!-- <script>
     const pieCtx = document.getElementById('pieChart').getContext('2d');
@@ -240,8 +257,15 @@
 
 
 
-   <!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <!-- -----------------------------------Chart.js CDN ----------------------------------------------------------------------->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <!-- -----------------------------------Chart.js CDN ----------------------------------------------------------------------->
+
+
+
+
+<!-- -----------------------------------------------------------Bar Chart JS------------------------------------------------------------------ -->
+
 
 <script>
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -311,6 +335,51 @@
   // Load chart initially
   document.addEventListener('DOMContentLoaded', updateChart);
 </script>
+
+<!-- -----------------------------------------------------------Line Chart JS------------------------------------------------------------------ -->
+<script>
+  let trendChart;
+
+  function renderTrendChart(labels, data) {
+    const ctx = document.getElementById('trendChart').getContext('2d');
+    if (trendChart) trendChart.destroy();
+
+    trendChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Emission (kg CO₂)',
+          data: data,
+          borderColor: '#0d6efd',
+          backgroundColor: 'rgba(13, 110, 253, 0.2)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#0d6efd'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  function updateTrendChart() {
+    const year = document.getElementById('trendYearSelect').value;
+
+    fetch(`/summary/trend-data?year=${year}`)
+      .then(res => res.json())
+      .then(json => renderTrendChart(json.labels, json.data));
+  }
+
+  document.addEventListener('DOMContentLoaded', updateTrendChart);
+</script>
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------- -->
 
 
 {% endblock %}
