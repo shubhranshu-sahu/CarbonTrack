@@ -7,7 +7,7 @@
   <div class="text-center mb-4">
     <h2 class="text-success fw-bold">{{ user.business_name }} - Dashboard</h2>
     <p class="text-muted mb-0">
-      <small>{{ user.business_type }} -  {{ user.sector }}</small>
+      <small>{{ user.business_type }} - {{ user.sector }}</small>
     </p>
     <p class="text-muted small">Overview of your carbon footprint and activities</p>
   </div>
@@ -26,7 +26,7 @@
           </p>
           {% if show_monthly_warning %}
           <p class="text-warning small mt-2"><i class="fas fa-exclamation-circle"></i> Above monthly average</p>
-        {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
           <h6 class="card-title">Yearly Emission</h6>
           <p class="card-text fs-5 fw-bold text-dark">
             {{ yearly_emission | round(2)}} t CO₂
-        </p>
+          </p>
         </div>
       </div>
     </div>
@@ -90,22 +90,45 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
 <div class="container my-4">
   <!-- Time Filter -->
-  
+
 
   <!-- Progress Card -->
   <div class="card shadow-sm border-0 mb-4">
-
-    <div class="text-end m-3">
-      <a href="{{ url_for('main.dashboard', filter='monthly') }}" class="btn btn-outline-primary btn-sm {% if filter_type == 'monthly' %}active{% endif %}">
-        This Month
-      </a>
-      <a href="{{ url_for('main.dashboard', filter='yearly') }}" class="btn btn-outline-primary btn-sm {% if filter_type == 'yearly' %}active{% endif %}">
-        This Year
-      </a>
-    </div>
-
     <div class="card-body">
-      <h5 class="card-title text-muted">Emission Usage</h5>
+
+      <div class="d-flex flex-row justify-content-between mb-3">
+        <div class="p-2">
+          <h5 class="card-title text-muted">Emission Usage</h5>
+        </div>
+
+        <div class="p-2">
+          <div class="text-end ">
+            <a href="{{ url_for('main.dashboard', filter='monthly') }}"
+              class="btn btn-outline-primary btn-sm {% if filter_type == 'monthly' %}active{% endif %}">
+              This Month
+            </a>
+            <a href="{{ url_for('main.dashboard', filter='yearly') }}"
+              class="btn btn-outline-primary btn-sm {% if filter_type == 'yearly' %}active{% endif %}">
+              This Year
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+<!-- 
+      <div class="text-end ">
+        <a href="{{ url_for('main.dashboard', filter='monthly') }}"
+          class="btn btn-outline-primary btn-sm {% if filter_type == 'monthly' %}active{% endif %}">
+          This Month
+        </a>
+        <a href="{{ url_for('main.dashboard', filter='yearly') }}"
+          class="btn btn-outline-primary btn-sm {% if filter_type == 'yearly' %}active{% endif %}">
+          This Year
+        </a>
+      </div>
+
+      <h5 class="card-title text-muted">Emission Usage</h5> -->
       <p class="mb-1 fw-bold text-dark">
         {{ emission_value | round(2)}} / {{ emission_limit | round(2)}} kg CO₂ used
       </p>
@@ -113,31 +136,21 @@
         <div class="progress-bar 
             {% if percent_used < 50 %}bg-success
             {% elif percent_used < 90 %}bg-warning
-            {% else %}bg-danger{% endif %}"
-            role="progressbar"
-            style="width: {{ percent_used }}%;"
-            aria-valuenow="{{ percent_used }}"
-            aria-valuemin="0"
-            aria-valuemax="100">
+            {% else %}bg-danger{% endif %}" role="progressbar" style="width: {{ percent_used }}%;"
+          aria-valuenow="{{ percent_used }}" aria-valuemin="0" aria-valuemax="100">
           {{ percent_used }}%
         </div>
       </div>
       <div class="mt-3 small text-muted">
-        {% if percent_used < 50 %}
-          🟢 You're within safe limits.
-        {% elif percent_used < 90 %}
-          🟠 Getting close to your limit.
-        {% else %}
-          🔴 Emissions exceeded! Consider reducing activity.
-        {% endif %}
+        {% if percent_used < 50 %} 🟢 You're within safe limits. {% elif percent_used < 90 %} 🟠 Getting close to your
+          limit. {% else %} 🔴 Emissions exceeded! Consider reducing activity. {% endif %} </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<!-- ---------------------------------------------------------------------------------------------------- -->
+  <!-- ---------------------------------------------------------------------------------------------------- -->
 
 
 
-{% endblock %}
+  {% endblock %}
