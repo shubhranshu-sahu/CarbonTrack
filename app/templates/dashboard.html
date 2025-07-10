@@ -1,4 +1,15 @@
 {% extends "base.html" %}
+
+{% block header %}
+
+<style>
+  .hover-shadow:hover {
+    box-shadow: 0 0 25px rgba(5, 133, 5, 0.8) !important;
+  }
+</style>
+{% endblock %}
+
+
 {% block content %}
 
 <div class="container-fluid">
@@ -151,6 +162,71 @@
 
   <!-- ---------------------------------------------------------------------------------------------------- -->
 
+  <!-- AI Suggestion Section -->
+<div class="container my-5" id="ai-suggestion-section">
+  <div class="text-center mb-4">
+    <h3 class="fw-bold text-success">Need Help Reducing Emissions?</h3>
+    <p class="text-muted">Get AI-powered personalized suggestions tailored to your emission patterns.</p>
+  </div>
+
+  <!-- AI Trigger Button Styled as Card -->
+  <div class="d-flex justify-content-center">
+    <div id="getSuggestionsBtn" class="card text-center p-4 shadow-sm border-0 hover-shadow" style="cursor: pointer; max-width: 400px; transition: all 0.3s;">
+      <div class="card-body">
+        <i class="fas fa-robot fa-2x text-success mb-2"></i>
+        <h5 class="card-title">Get Personalized AI Suggestions</h5>
+        <p class="card-text text-muted">Click to generate insights and reduction tips from Carbon Coach 🤖🌱</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Suggestions Cards Container -->
+  <div class="row mt-4 d-none" id="suggestionCards">
+    {% for i in range(4) %}
+    <div class="col-md-6 mb-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="card-title text-success"><i class="fas fa-lightbulb me-2"></i>Suggestion {{ i + 1 }}</h6>
+          <p class="card-text" id="suggestion{{ i }}"></p>
+        </div>
+      </div>
+    </div>  
+    {% endfor %}
+  </div>
+</div>
+
+
+<script>
+  document.getElementById("getSuggestionsBtn").addEventListener("click", function () {
+    const suggestionSection = document.getElementById("suggestionCards");
+    suggestionSection.classList.remove("d-none");
+
+    // Show "Loading..." while waiting
+    for (let i = 0; i < 4; i++) {
+      document.getElementById(`suggestion${i}`).textContent = "Loading suggestion...";
+    }
+
+    fetch("/get_ai_suggestions")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch suggestions.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        const suggestions = data.suggestions;
+        for (let i = 0; i < suggestions.length; i++) {
+          document.getElementById(`suggestion${i}`).textContent = suggestions[i];
+        }
+      })
+      .catch(error => {
+        for (let i = 0; i < 4; i++) {
+          document.getElementById(`suggestion${i}`).textContent = "❌ Could not load suggestion. Please try again.";
+        }
+        console.error("Error fetching suggestions:", error);
+      });
+  });
+</script>
 
 
   {% endblock %}

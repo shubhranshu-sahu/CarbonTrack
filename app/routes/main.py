@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for, flash 
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash , jsonify
 
 from functools import wraps
 
@@ -6,11 +6,15 @@ from app.models.user import User
 from app.models.sector_limit import SectorLimit
 from app.models.emmision import Emission
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 
 from flask import abort
 
+import os
+import requests
+# from openai import OpenAI  # ✅ This is correct for v1.0+
+import json
 
 
 from app import db  # -----------------------> db only required and adding data to table , lile , db.session.add , db.session.commit() 
@@ -154,9 +158,145 @@ def dashboard():
     )
 
 
- 
+
+#------------------------------- Hugging face AI Suggestion Route ------------------------------------------------------------------------------------
+
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+headers = {
+    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    "Content-Type": "application/json",
+    "HTTP-Referer": "http://localhost:5000",  # Or your real URL later
+    "X-Title": "CarbonTrack-AI"
+}
+
+@main_bp.route("/get_ai_suggestions")
+@login_required
+def get_ai_suggestions():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    start = datetime.now() - timedelta(days=30)
+    emissions = Emission.query.filter(Emission.user_id == user_id,
+                                      Emission.date >= start).all()
+    if not emissions:
+        return jsonify({"suggestions": [
+            "No recent data. Log some activities!",
+            "Try to add electricity or travel data.",
+            "Tracking helps you improve.",
+            "Stay consistent to see trends."
+        ]})
+
+    cat_totals = {}
+    for e in emissions:
+        cat_totals[e.category] = cat_totals.get(e.category, 0) + e.emission
+    summary = "\n".join(f"{c}: {round(v, 2)} kg CO₂" for c, v in cat_totals.items())
+
+    prompt = f"""You are 'Carbon Coach 🤖🌱'. Based on the emissions:
+{summary}
+
+Suggest 4 easy, practical actions that a small business can take to reduce their carbon footprint. Provide them as a numbered list."""
+
+    try:
+        data = {
+            "model": "mistralai/mistral-7b-instruct:free",
+            "messages": [
+                {"role": "system", "content": "You are Carbon Coach, an AI that helps businesses reduce carbon emissions."},
+                {"role": "user", "content": prompt}
+            ]
+        }
+
+        r = requests.post(OPENROUTER_URL, headers=headers, data=json.dumps(data))
+        r.raise_for_status()
+        response = r.json()
+
+        reply = response["choices"][0]["message"]["content"]
+        suggestions = [s.strip("0123456789. ") for s in reply.split("\n") if s.strip()]
+        return jsonify({"suggestions": suggestions[:4]})
+    except Exception as e:
+        print("OpenRouter API error:", e)
+        return jsonify({"suggestions": [
+            "AI temporarily unavailable.",
+            "Try again later.",
+            "Check your API key or model.",
+            "Contact support if it persists."
+        ]})
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#------------------------------- OpenAI Suggestion Route ------------------------------------------------------------------------------------
  
 
+
+# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # You can use environment variable too
+
+# @main_bp.route("/get_ai_suggestions")
+# @login_required
+# def get_ai_suggestions():
+#     user_id = session.get("user_id")
+#     if not user_id:
+#         return jsonify({"error": "Unauthorized"}), 403
+
+#     # Get emissions in last 30 days
+#     start_date = datetime.now() - timedelta(days=30)
+#     emissions = Emission.query.filter(
+#         Emission.user_id == user_id,
+#         Emission.date >= start_date
+#     ).all()
+
+#     if not emissions:
+#         return jsonify({"suggestions": [
+#             "We couldn't find any recent emission data.",
+#             "Try logging your activities regularly.",
+#             "Once you add some records, Carbon Coach will generate insights.",
+#             "Reduce your footprint today by tracking energy and transport."
+#         ]})
+
+#     # Aggregate emissions by category
+#     category_totals = {}
+#     for e in emissions:
+#         category_totals[e.category] = category_totals.get(e.category, 0) + e.emission
+
+#     # Create a summary string
+#     summary_lines = [f"{cat}: {round(total, 2)} kg CO₂" for cat, total in category_totals.items()]
+#     summary_text = "\n".join(summary_lines)
+
+#     # OpenAI Prompt
+#     prompt = f"""
+# You're an AI environmental assistant called 'Carbon Coach 🤖🌱'. Based on the following user's emissions from the last 30 days:
+
+# {summary_text}
+
+# Suggest 4 clear, practical, and MSME-friendly actions to reduce their carbon footprint. Respond as a numbered list, no extra intro or outro.
+# """
+
+#     try:
+#         response = client.chat.completions.create(
+#             model="gpt-3.5-turbo",
+#             messages=[
+#                 {"role": "system", "content": "You are a helpful environmental assistant."},
+#                 {"role": "user", "content": prompt}
+#             ],
+#             max_tokens=300,
+#             temperature=0.7
+#         )
+
+#         suggestions_raw = response.choices[0].message.content
+#         suggestions = [s.strip() for s in suggestions_raw.split("\n") if s.strip()]
+#         suggestions = suggestions[:4] if len(suggestions) >= 4 else suggestions
+
+#         return jsonify({"suggestions": suggestions})
+
+#     except Exception as e:
+#         print("OpenAI error:", e)
+#         return jsonify({"suggestions": [
+#             "We encountered an issue generating suggestions.",
+#             "Try again shortly or check your OpenAI setup.",
+#             "Make sure your emissions are updated.",
+#             "Contact support if the issue persists."
+#         ]})
 
 #-------------------------------------------------------------------------------------------------------------------
 
