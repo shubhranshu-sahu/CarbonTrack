@@ -15,6 +15,7 @@
 </head>
 
 <body>
+
   <div id="wrapper">
 
     <!-- Sidebar -->
@@ -46,12 +47,12 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white {% if request.path == '/report' %}active{% endif %}" href="/report">
+          <a class="nav-link text-white {% if request.path == '/report' %}active{% endif %}" href="{{ url_for('report.report') }}">
             <i class="fas fa-file-download me-2"></i><span>Reports</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white {% if request.path == '/profile' %}active{% endif %}" href="/profile">
+          <a class="nav-link text-white {% if request.path == '/profile' %}active{% endif %}" href="{{ url_for('profile.profile') }}">
             <i class="fas fa-user me-2"></i><span>Profile</span>
           </a>
         </li>

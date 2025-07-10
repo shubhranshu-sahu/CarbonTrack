@@ -18,11 +18,15 @@ def create_app():
     from .routes.auth import auth_bp
     from .routes.summary import summary_bp
     from .routes.main import main_bp
+    from .routes.report import report_bp
+    from .routes.profile import profile_bp
 
      
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(summary_bp)
+    app.register_blueprint(report_bp)
+    app.register_blueprint(profile_bp)
 
     
 

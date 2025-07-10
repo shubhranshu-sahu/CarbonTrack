@@ -22,7 +22,7 @@
           <i class="fas fa-calendar-alt fa-2x text-success mb-2"></i>
           <h6 class="card-title">Monthly Emission</h6>
           <p class="card-text fs-5 fw-bold text-dark">
-            {{monthly_emission | round(2)}} / {{ monthly_limit}} t CO₂
+            {{monthly_emission | round(2)}} / {{ monthly_limit | round(2)}} t CO₂
           </p>
           {% if show_monthly_warning %}
           <p class="text-warning small mt-2"><i class="fas fa-exclamation-circle"></i> Above monthly average</p>
@@ -107,7 +107,7 @@
     <div class="card-body">
       <h5 class="card-title text-muted">Emission Usage</h5>
       <p class="mb-1 fw-bold text-dark">
-        {{ emission_value }} / {{ emission_limit }} kg CO₂ used
+        {{ emission_value | round(2)}} / {{ emission_limit | round(2)}} kg CO₂ used
       </p>
       <div class="progress" style="height: 30px;">
         <div class="progress-bar 
