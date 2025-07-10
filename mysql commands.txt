@@ -1,0 +1,177 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    business_name VARCHAR(100) NOT NULL,
+    owner_name VARCHAR(100) NOT NULL,
+    email VARCHAR(120) NOT NULL UNIQUE,
+    password_hash VARCHAR(128) NOT NULL,
+
+    msme_category VARCHAR(10) NOT NULL,  -- Micro / Small / Medium
+    business_type VARCHAR(100) NOT NULL,
+    sector VARCHAR(100) NOT NULL
+
+    industry_sector VARCHAR(100),
+    annual_turnover FLOAT,
+    location VARCHAR(150),
+    contact_number VARCHAR(15),
+    registration_number VARCHAR(50),
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-------------------------------------------------------------------------------------------sector table -------------------------------------------------------------------------------------
+
+CREATE TABLE sector_limits (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    business_type VARCHAR(100),
+    sector VARCHAR(100),
+    msme_category ENUM('Micro', 'Small', 'Medium'),
+    yearly_limit_tco2 INT,
+    last_updated DATE
+);
+
+
+
+-- Manufacturing
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Iron & Steel', 'Micro', 300, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Iron & Steel', 'Small', 600, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Iron & Steel', 'Medium', 1200, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Aluminium', 'Micro', 250, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Aluminium', 'Small', 500, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Aluminium', 'Medium', 1000, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Cement', 'Micro', 280, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Cement', 'Small', 560, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Cement', 'Medium', 1120, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Petrochemicals', 'Micro', 320, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Petrochemicals', 'Small', 640, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Petrochemicals', 'Medium', 1280, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Foundry', 'Micro', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Foundry', 'Small', 400, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Foundry', 'Medium', 800, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Paper & Pulp', 'Micro', 180, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Paper & Pulp', 'Small', 360, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Paper & Pulp', 'Medium', 720, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Other', 'Micro', 150, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Other', 'Small', 300, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Manufacturing', 'Other', 'Medium', 600, '2025-07-09');
+
+-- Textile
+INSERT INTO sector_limits VALUES (NULL, 'Textile', 'Textile', 'Micro', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Textile', 'Textile', 'Small', 400, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Textile', 'Textile', 'Medium', 800, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Textile', 'Other', 'Micro', 150, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Textile', 'Other', 'Small', 300, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Textile', 'Other', 'Medium', 600, '2025-07-09');
+
+-- Food Processing
+INSERT INTO sector_limits VALUES (NULL, 'Food Processing', 'Food Processing', 'Micro', 180, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Food Processing', 'Food Processing', 'Small', 360, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Food Processing', 'Food Processing', 'Medium', 720, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Food Processing', 'Other', 'Micro', 140, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Food Processing', 'Other', 'Small', 280, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Food Processing', 'Other', 'Medium', 560, '2025-07-09');
+
+-- IT Services
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Commercial Buildings', 'Micro', 80, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Commercial Buildings', 'Small', 160, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Commercial Buildings', 'Medium', 320, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Data Centers', 'Micro', 120, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Data Centers', 'Small', 240, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Data Centers', 'Medium', 480, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Other', 'Micro', 60, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Other', 'Small', 120, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'IT Services', 'Other', 'Medium', 240, '2025-07-09');
+
+-- Logistics
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Commercial Buildings', 'Micro', 100, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Commercial Buildings', 'Small', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Commercial Buildings', 'Medium', 400, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Warehousing', 'Micro', 150, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Warehousing', 'Small', 300, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Warehousing', 'Medium', 600, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Other', 'Micro', 100, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Other', 'Small', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Logistics', 'Other', 'Medium', 400, '2025-07-09');
+
+-- Retail
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Commercial Buildings', 'Micro', 90, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Commercial Buildings', 'Small', 180, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Commercial Buildings', 'Medium', 360, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Warehousing', 'Micro', 100, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Warehousing', 'Small', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Warehousing', 'Medium', 400, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Other', 'Micro', 80, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Other', 'Small', 160, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Retail', 'Other', 'Medium', 320, '2025-07-09');
+
+-- Construction
+INSERT INTO sector_limits VALUES (NULL, 'Construction', 'Cement', 'Micro', 300, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Construction', 'Cement', 'Small', 600, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Construction', 'Cement', 'Medium', 1200, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Construction', 'Other', 'Micro', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Construction', 'Other', 'Small', 400, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Construction', 'Other', 'Medium', 800, '2025-07-09');
+
+-- Healthcare
+INSERT INTO sector_limits VALUES (NULL, 'Healthcare', 'Commercial Buildings', 'Micro', 120, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Healthcare', 'Commercial Buildings', 'Small', 240, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Healthcare', 'Commercial Buildings', 'Medium', 480, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Healthcare', 'Other', 'Micro', 100, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Healthcare', 'Other', 'Small', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Healthcare', 'Other', 'Medium', 400, '2025-07-09');
+
+-- Education
+INSERT INTO sector_limits VALUES (NULL, 'Education', 'Commercial Buildings', 'Micro', 100, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Education', 'Commercial Buildings', 'Small', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Education', 'Commercial Buildings', 'Medium', 400, '2025-07-09');
+
+INSERT INTO sector_limits VALUES (NULL, 'Education', 'Other', 'Micro', 80, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Education', 'Other', 'Small', 160, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Education', 'Other', 'Medium', 320, '2025-07-09');
+
+-- Other
+INSERT INTO sector_limits VALUES (NULL, 'Other', 'Other', 'Micro', 100, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Other', 'Other', 'Small', 200, '2025-07-09');
+INSERT INTO sector_limits VALUES (NULL, 'Other', 'Other', 'Medium', 400, '2025-07-09');
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------Emmision Table ------------------------------------------------------------------------------------------
+
+
+CREATE TABLE emissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    category VARCHAR(50) NOT NULL,       -- Electricity, Fuel, etc.
+    sub_type VARCHAR(50) NOT NULL,       -- Diesel, Petrol, etc.
+    value FLOAT NOT NULL,                -- User input quantity
+    unit VARCHAR(20) NOT NULL,           -- kg, L, kWh, etc.
+    emission FLOAT NOT NULL,             -- Calculated CO₂ emission in kg
+    date DATE NOT NULL,                  -- Date of activity
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
