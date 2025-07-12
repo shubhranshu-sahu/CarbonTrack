@@ -11,8 +11,16 @@ def create_app():
 
     load_dotenv()
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
-    
+
+    prod = True
+
+    if prod==True:
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL_PROD")
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+
+
+
     db.init_app(app) # used instead of db = SQLAlchemy(app)
     
     from .routes.auth import auth_bp
