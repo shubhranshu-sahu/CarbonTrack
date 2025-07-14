@@ -12,7 +12,7 @@ def create_app():
     load_dotenv()
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
-    prod = True
+    prod = False
 
     if prod==True:
         app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL_PROD")

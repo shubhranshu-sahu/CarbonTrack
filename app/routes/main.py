@@ -159,7 +159,7 @@ def dashboard():
 
 
 
-#------------------------------- Hugging face AI Suggestion Route ------------------------------------------------------------------------------------
+#------------------------------- Openrouter AI Suggestion Route ------------------------------------------------------------------------------------
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -393,10 +393,11 @@ def add_activity():
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @main_bp.route("/activities")
+@login_required
 def activities():
     # Ensure user is logged in
     if "user_id" not in session:
-        return redirect(url_for("login"))
+        return redirect(url_for("auth.login"))
 
     user_id = session["user_id"]
 
