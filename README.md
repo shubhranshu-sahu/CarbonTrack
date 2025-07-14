@@ -1,107 +1,109 @@
 # 🌱 MSME CarbonTrack
 
-**MSME CarbonTrack** is a Flask-based web platform designed to help Micro, Small, and Medium Enterprises (MSMEs) in India **track, monitor, and reduce their carbon footprint**. The application enables businesses to log their carbon-emitting activities, visualize their emissions through interactive charts, and stay within their prescribed carbon limits based on government guidelines.
+> **Track. Analyze. Reduce.**  
+> Empowering MSMEs with digital tools to build a greener future.
 
 ---
 
-## 🚀 Features Implemented
+## 🌍 What is CarbonTrack?
 
-### ✅ 1. User Authentication & Business Profile
-- Secure registration and login system (with hashed passwords using `passlib`).
-- Registration form includes:
-  - Business Name
-  - Owner Name
-  - Email & Password
-  - MSME Category (Micro / Small / Medium)
-  - Business Type
-- User information is stored in a structured SQLAlchemy model using MySQL.
+**MSME CarbonTrack** is a Flask-based web platform designed to help **Micro, Small, and Medium Enterprises (MSMEs)** in India **track, monitor, and reduce their carbon footprint**.
+
+Many MSMEs operate in semi-urban or rural areas where digital awareness and environmental tracking tools are limited. CarbonTrack bridges this gap by offering an intuitive, AI-enhanced system to log carbon emissions, visualize usage patterns, and get smart suggestions — all aligned with government guidelines and thresholds.
 
 ---
 
-### ✅ 2. Dashboard (User Overview)
-- Shows summarized statistics:
-  - **This Month's Emissions**
-  - **This Year’s Emissions**
-  - **All-Time Emissions**
-- Includes a **progress bar component**:
-  - Displays emissions used vs. limit.
-  - Color-coded progress (Green, Orange, Red).
-  - Emoji feedback for user-friendly interpretation.
-  - **Switch between Monthly and Yearly views** with smooth, no-reload updates using `fetch()`.
+## 🚨 Why CarbonTrack?
+
+🔻 **The Problem**
+- Lack of awareness and tools for tracking carbon emissions at the MSME level.
+- Difficulty in staying within prescribed CO₂ emission limits.
+- No affordable or user-friendly solution for monitoring emissions in real time.
+
+✅ **Our Solution**
+- A digital, mobile-friendly platform that empowers MSMEs to **log, view, and analyze** their carbon emissions.
+- Integrated **AI suggestions** for actionable improvement.
+- Auto-generated reports for internal use or compliance reporting.
 
 ---
 
-### ✅ 3. Activities Page (Log Carbon Emissions)
-- Users can **log activities** via a Bootstrap modal form.
-  - Input fields: `category`, `sub_type`, `value`, `unit`, and `date`.
-- Activities are stored in the `Emission` table.
-- Displays:
-  - **Recent Activities Table**
-  - **All Logged Activities**
-- Each activity shows:
-  - Serial No, Date, Category, Sub-type, Value, Unit, and Emissions in kg CO₂.
-- Includes actions for:
-  - 📝 Edit (opens modal with prefilled values)
-  - 🗑️ Delete (removes activity via backend route)
+## 🚀 Key Features
+
+### ✅ 1. **Secure User Authentication & Business Profiling**
+- Sign up with business details (MSME category, type, etc.).
+- Data stored securely with password hashing (`passlib`).
+- Configurable business profile to personalize insights.
 
 ---
 
-### ✅ 4. Summary Page (Visual Emission Insights)
-- Pie Chart: Emissions distribution by category (using Chart.js).
-- Bar Chart:
-  - Interactive filtering: monthly/yearly views
-  - Custom dropdown to select year & month
-  - Uses `fetch()` to update charts dynamically without page reload.
-- Line Chart: Trend of emissions over the months (area-style line graph).
+### 📊 2. **Interactive Dashboard**
+- Real-time emission summary: **monthly, yearly, all-time**.
+- Emission vs. government limit with **color-coded progress bars**.
+- Toggle between **monthly** and **yearly** views dynamically.
 
 ---
 
-### ✅ 5. Sidebar Navigation (Fixed & Collapsible)
-- Collapsible Bootstrap sidebar with icons.
-- Sticky (fixed) sidebar that remains in place during scroll.
-- Hamburger icon toggles the sidebar (shows ❌ when expanded and ☰ when collapsed).
-- Active state highlighting for each page.
+### 📋 3. **Carbon Emission Activity Logging**
+- Add daily carbon-emitting activities:
+  - Inputs: `Category`, `Sub-type`, `Value`, `Unit`, `Date`.
+- Automatic calculation of CO₂ emission per activity.
+- View logs in a table with:
+  - Serial No., Category, Sub-type, Value, Emission, Date.
+- Actions:
+  - 📝 Edit via modal
+  - 🗑️ Delete activity
+
+---
+
+### 📈 4. **Emission Summary with Graphs**
+- **Pie Chart**: Category-wise CO₂ distribution.
+- **Bar Chart**: Monthly/yearly comparison with dropdown selectors.
+- **Line Chart**: Emission trends across time.
+- **All graphs update dynamically without reloading** using JavaScript `fetch()`.
+
+---
+
+### 🤖 5. **AI-Powered Suggestions (Carbon Coach 🌱)**
+- Clickable AI button styled as a card.
+- Fetches **4 personalized tips** using AI (based on last 30 days’ emission data).
+- Highlights the user's high-emission areas and gives practical MSME-friendly suggestions.
+
+---
+
+### 📄 6. **PDF Report Generation**
+- Download beautiful, styled **PDF reports** with:
+  - Emission totals and category-wise breakdown
+  - Trend graphs and pie/bar charts
+  - Custom date range selector
+
+---
+
+### 👤 7. **User Profile Page**
+- Update business name, category, and type.
+- Extendable fields for future analytics or sector-specific adjustments.
+
+---
+
+### 🧭 8. **Sidebar Navigation**
+- Clean, collapsible **Bootstrap sidebar**.
+- Icons for all sections with active highlighting.
+- Responsive for mobile and tablet users.
 
 ---
 
 ## 🔧 Technologies Used
 
-- **Backend**: Python, Flask, SQLAlchemy ORM
-- **Frontend**: Bootstrap 5, HTML5, CSS, JavaScript
-- **Database**: MySQL
-- **Charts & Visuals**: Chart.js
-- **Authentication**: Custom logic with `passlib` for hashing
+| Layer         | Technologies                                |
+|---------------|---------------------------------------------|
+| **Frontend**  | HTML5, CSS3, Bootstrap 5, JavaScript        |
+| **Backend**   | Flask, Python, SQLAlchemy ORM               |
+| **Database**  | MySQL (can use Railway, PlanetScale, etc.)  |
+| **Charts**    | Chart.js                                    |
+| **PDF Reports**| xhtml2pdf / WeasyPrint                     |
+| **AI Integration** | OpenAI API / (HuggingFace optional fallback) |
+| **Security**  | `passlib` for password hashing              |
 
 ---
 
-## 🧪 Planned Features (Coming Soon)
+## 📦 Folder Structure
 
-### 🔄 1. In-Place Editing for Activities
-- Allow users to update activities using AJAX, without reloading the page.
-
-### 📤 2. PDF & Excel Reports
-- Generate downloadable reports summarizing emissions by category and time range.
-
-### 📈 3. Advanced Analytics
-- More chart types: stacked bars, radar, comparative views.
-- Forecasting emissions based on current activity patterns.
-
-### 🛠️ 4. Sector-Wise Recommendations
-- Offer sector-specific suggestions to reduce emissions.
-- Show cleaner alternatives and potential carbon savings.
-
-### 📬 5. Notification System
-- Alerts for exceeding carbon thresholds.
-- Email notifications and dashboard popups.
-
-### 🛡️ 6. Admin Panel
-- Manage users, review emission logs, approve reports.
-
----
-
-## 🧰 Installation Guide
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/msme-carbontrack.git
-cd msme-carbontrack

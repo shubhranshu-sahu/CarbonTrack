@@ -2,3 +2,4 @@ carbon/
 __pycache__/
 *.pyc
 .env   
+mysql_commands.txt
