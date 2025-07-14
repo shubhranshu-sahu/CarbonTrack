@@ -397,7 +397,7 @@ def add_activity():
 def activities():
     # Ensure user is logged in
     if "user_id" not in session:
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("auth.login"))  # not needed , since already using login_req decorator , remove it later !!!
 
     user_id = session["user_id"]
 
